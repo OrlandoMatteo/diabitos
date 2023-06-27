@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <title>Diabitos</title>
+  </head>
+
+  <body>
+    <div class="container mt-6">
+      <div>
+        <h1>Diabitos</h1>
+        <div class="alert alert-info">
+          Calcola il fabbisogno insulinico di un paziente specificando peso e
+          fattore di correzione
+        </div>
+      </div>
+      <div class="m-3">
+        <label for="weight" class="form-label">Peso del paziente</label>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            id="weight"
+            class="form-control"
+            aria-label="Peso del Paziente"
+            onchange="fabbisognoInsulinico()"
+          />
+          <span class="input-group-text">Kg</span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Caratteristiche paziente</th>
+              <th scope="col">Unità/Kg/DIE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Insulino-sensibile, magro, malnutrito, a rischio di ipoglcemia,
+                (sopratutto DT1),anziano, IRA, IRC (in particolare se dialisi)
+              </td>
+              <td>0.3</td>
+            </tr>
+            <tr>
+              <td>
+                Peso normale, con normale sensibilita insulinica escluso DT1
+              </td>
+              <td>0.4</td>
+            </tr>
+            <tr>
+              <td>Sovrappeso</td>
+              <td>0.5</td>
+            </tr>
+            <tr>
+              <td>
+                Insulino resistente (obeso) o in terapia con alte dosi di
+                corticosteroidi
+              </td>
+              <td>0.6</td>
+            </tr>
+          </tbody>
+        </table>
+        <select
+          class="form-select form-select-lg mb-3"
+          aria-label=".form-select-lg example"
+          onchange="fabbisognoInsulinico()"
+          id="correzione"
+        >
+          <option selected>Selezione le Caratteristiche</option>
+          <option value="0.3">
+            Insulino-sensibile, magro, malnutrito, a rischio di ipoglcemia,
+            (sopratutto DT1),anziano, IRA, IRC (in particolare se dialisi)
+          </option>
+          <option value="0.4">
+            Peso normale, con normale sensibilita insulinica escluso DT1
+          </option>
+          <option value="0.5">Sovrappeso</option>
+          <option value="0.6">
+            Insulino resistente (obeso) o in terapia con alte dosi di
+            corticosteroidi
+          </option>
+        </select>
+        <fieldset disabled>
+          <div class="input-group mb-3">
+            <span class="input-group-text"
+              >Fabbisogno Insulinico calcolato</span
+            >
+            <input
+              type="text"
+              id="UI"
+              class="form-control"
+              aria-label="Fabbisogno Insulinico"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Basale</span>
+            <input
+              type="text"
+              id="UI-basale"
+              class="form-control"
+              aria-label="UI-basale"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Colazione</span>
+            <input
+              type="text"
+              id="UI-colazione"
+              class="form-control"
+              aria-label="UI-colazione"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Pranzo</span>
+            <input
+              type="text"
+              id="UI-pranzo"
+              class="form-control"
+              aria-label="UI-pranzo"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text">Cena</span>
+            <input
+              type="text"
+              id="UI-cena"
+              class="form-control"
+              aria-label="UI-cena"
+            />
+          </div>
+        </fieldset>
+        <fieldset disabled>
+          <div class="input-group mb-3">
+            <span class="input-group-text">UI di analogo rapido (mg/dL)</span>
+            <input
+              type="text"
+              id="UI-rapido"
+              class="form-control"
+              aria-label="UI-rapido"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text"
+              >UI di insulina regolare (Actrapid (mg/dL))</span
+            >
+            <input
+              type="text"
+              id="UI-regolare"
+              class="form-control"
+              aria-label="UI-regolare"
+            />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text"
+              >UI di Insulina ultrarapida (Fiasp) (mg/dL)</span
+            >
+            <input
+              type="text"
+              id="UI-ultrarapida"
+              class="form-control"
+              aria-label="UI-ultrarapida"
+            />
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function fabbisognoInsulinico() {
+        //get weight and convert to number
+        var peso = parseFloat(document.querySelector("#weight").value);
+        var correzione = parseFloat(
+          document.querySelector("#correzione").value
+        );
+        var UI = peso * correzione;
+        document.querySelector("#UI").value = UI.toFixed(2);
+        document.querySelector("#UI-basale").value = (UI * 0.5).toFixed(2);
+        document.querySelector("#UI-colazione").value = (UI * 0.1).toFixed(2);
+        document.querySelector("#UI-pranzo").value = (UI * 0.2).toFixed(2);
+        document.querySelector("#UI-cena").value = (UI * 0.2).toFixed(2);
+        document.querySelector("#UI-rapido").value = (1800 / UI).toFixed(2);
+        document.querySelector("#UI-regolare").value = (1500 / UI).toFixed(2);
+        document.querySelector("#UI-ultrarapida").value = (2200 / UI).toFixed(
+          2
+        );
+      }
+    </script>
+  </body>
+</html>
